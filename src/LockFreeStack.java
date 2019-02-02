@@ -1,13 +1,14 @@
 //import org.w3c.dom.Node;
 
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
-public class LockStack<T> {
+public class LockFreeStack<T> {
 
-    Lock lock;
-    Node head;
-    int numOps;
+    private Lock lock;
+    private Node head;
+    private AtomicInteger numOps;
 
     class Node<T>{
         public T val;
@@ -19,9 +20,9 @@ public class LockStack<T> {
         }
     }
 
-    public LockStack(){
-        lock = new ReentrantLock();
-        head = null;
+    public LockFreeStack(){
+        this.lock = new ReentrantLock();
+       this.head = null;
     }
 
     public boolean push(T p){
@@ -29,7 +30,7 @@ public class LockStack<T> {
         Node n = new Node(p);
         n.next = head;
         head = n;
-        numOps++;
+        numOps.getAndIncrement();
         lock.unlock();
         return true;
     }
@@ -42,13 +43,13 @@ public class LockStack<T> {
         }
         Node n = head;
         head = n.next;
-        numOps++;
+        numOps.getAndIncrement();
         lock.unlock();
         return (T)n.val;
     }
 
     public int getNumOps(){
-        return numOps;
+        return numOps.get();
     }
 
 
