@@ -6,8 +6,8 @@ import java.util.concurrent.locks.ReentrantLock;
 
 public class LockFreeStack<T> {
 
-    private Lock lock;
-    private Node head;
+    
+    private volatile Node head;
     private AtomicInteger numOps;
 
     class Node<T>{
@@ -21,30 +21,33 @@ public class LockFreeStack<T> {
     }
 
     public LockFreeStack(){
-        this.lock = new ReentrantLock();
        this.head = null;
     }
 
     public boolean push(T p){
-        lock.lock();
+
         Node n = new Node(p);
         n.next = head;
         head = n;
         numOps.getAndIncrement();
-        lock.unlock();
+        //lock.unlock();
         return true;
     }
 
     public T pop(){
-        lock.lock();
+
         if (head == null){
-            lock.unlock();
+            //lock.unlock();
             return null;
         }
         Node n = head;
+
+
         head = n.next;
+
+
         numOps.getAndIncrement();
-        lock.unlock();
+
         return (T)n.val;
     }
 
