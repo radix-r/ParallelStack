@@ -1,8 +1,16 @@
 # Made using java 11
-Compile: javac 
 
+Download and install: https://www.oracle.com/technetwork/java/javase/downloads/jdk11-downloads-5066655.html
+
+Compile: javac LockFreeStack.java
+
+Run: java LockFreeStack
+
+
+# Overview
 
 Implementation of a lock free stack using exponential back off
+
 Influenced by The example in the book in chapter 11
 
 The linearization point of the push operation  is when compareAndSet is called in try push.
@@ -14,6 +22,7 @@ The pop takes effect when compareAndSet is called. The pop operation can be plac
 serial history according to when compareAndSet returns true meaning that the old head has been replaced
 with new head.
 
-The lack of locks in this implementation guarantees that at least one method call finishes in a finite number
-of steps. I use exponential backoff instead a queuing structure so fairness is not guaranted.
+This implementation is lock free because a thread fails to complete push or pop method call only if there were infinitely manny
+successful calls that modified the head of the stack. The lack of locks in this implementation guarantees that at least one method call finishes in a finite number
+of steps. I use exponential backoff instead a queuing structure so fairness is not guaranteed.
 

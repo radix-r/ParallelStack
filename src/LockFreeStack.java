@@ -1,4 +1,8 @@
 /**
+ *
+ * @Author: Ross Wagner
+ * 2/3/2019
+ *
  * Implementation of a lock free stack using exponential back off
  * Influenced by The example in the book in chapter 11
  *
