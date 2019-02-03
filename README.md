@@ -11,7 +11,7 @@ Run: java LockFreeStack
 
 Implementation of a lock free stack using exponential back off
 
-Influenced by The example in the book in chapter 11
+Influenced by The example in the book "The Art of Multiprocessor Programming" in chapter 11
 
 The linearization point of the push operation  is when compareAndSet is called in try push.
 The push takes effect when compareAndSet is called. The push operation can be placed in a
